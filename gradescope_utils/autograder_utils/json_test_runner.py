@@ -45,10 +45,14 @@ class JSONTestResult(result.TestResult):
                 out += err
             return out
 
-    def buildResult(self, test, passed):
+    def buildResult(self, test, err=None):
+        passed = (err == None)
+
         weight = self.getWeight(test)
         tags = self.getTags(test)
         output = self.getOutput()
+        if err:
+            output += "Test Failed: {0}\n".format(err[1])
         result = {
             "name": self.getDescription(test),
             "score": weight if passed else 0.0,
@@ -62,17 +66,15 @@ class JSONTestResult(result.TestResult):
 
     def addSuccess(self, test):
         super(JSONTestResult, self).addSuccess(test)
-        self.results.append(self.buildResult(test, True))
+        self.results.append(self.buildResult(test))
 
     def addError(self, test, err):
         super(JSONTestResult, self).addError(test, err)
-        print("ERROR:", err[1])
-        self.results.append(self.buildResult(test, False))
+        self.results.append(self.buildResult(test, err))
 
     def addFailure(self, test, err):
         super(JSONTestResult, self).addFailure(test, err)
-        print("Test Failed:", str(err[1]))
-        self.results.append(self.buildResult(test, False))
+        self.results.append(self.buildResult(test, err))
 
 
 class JSONTestRunner(object):
