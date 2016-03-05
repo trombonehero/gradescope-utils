@@ -117,6 +117,12 @@ class JSONTestRunner(object):
         timeTaken = stopTime - startTime
 
         self.json_data["execution_time"] = format(timeTaken, "0.2f")
+
+        total_score = 0
+        for test in self.json_data["tests"]:
+            total_score += test["score"]
+        self.json_data["score"] = total_score
+
         json.dump(self.json_data, self.stream, indent=4)
         self.stream.write('\n')
         return result
