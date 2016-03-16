@@ -82,7 +82,7 @@ class JSONTestRunner(object):
     """
     resultclass = JSONTestResult
 
-    def __init__(self, stream=sys.stderr, descriptions=True, verbosity=1,
+    def __init__(self, stream=sys.stdout, descriptions=True, verbosity=1,
                  failfast=False, buffer=True):
         """
         Set buffer to True to include test output in JSON
