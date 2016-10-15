@@ -70,10 +70,13 @@ class JSONTestResult(result.TestResult):
 
     def addError(self, test, err):
         super(JSONTestResult, self).addError(test, err)
+        # Prevent output from being printed to stdout on failure
+        self._mirrorOutput = False
         self.results.append(self.buildResult(test, err))
 
     def addFailure(self, test, err):
         super(JSONTestResult, self).addFailure(test, err)
+        self._mirrorOutput = False
         self.results.append(self.buildResult(test, err))
 
 
