@@ -10,6 +10,7 @@ class weight(object):
         func.__weight__ = self.val
         return func
 
+
 class visibility(object):
     """Simple decorator to add a __visibility__ property to a function
 
@@ -29,6 +30,7 @@ class visibility(object):
     def __call__(self, func):
         func.__visibility__ = self.val
         return func
+
 
 class tags(object):
     """Simple decorator to add a __tags__ property to a function
