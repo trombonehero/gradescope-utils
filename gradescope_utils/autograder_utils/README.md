@@ -7,7 +7,7 @@ work on Gradescope.
 
 ## decorators
 
-Two decorators are provided for annotating test cases.
+Decorators are provided for annotating test cases.
 
 ### @weight
 
@@ -31,6 +31,17 @@ programming assignments.
 Example:
 ```
 @tags("conditionals", "recursion")
+def test_search():
+    ...
+```
+
+### @visibility
+
+The `@visibility` decorator allows setting the visibility of a test case.
+
+Example:
+```
+@visibility("after_due_date")
 def test_search():
     ...
 ```
