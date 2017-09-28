@@ -14,11 +14,11 @@ class JSONTestResult(result.TestResult):
 
     Used by JSONTestRunner.
     """
-    def __init__(self, stream, descriptions, verbosity, results, leaderboard_columns):
+    def __init__(self, stream, descriptions, verbosity, results, leaderboard):
         super(JSONTestResult, self).__init__(stream, descriptions, verbosity)
         self.descriptions = descriptions
         self.results = results
-        self.leaderboard_columns = leaderboard_columns
+        self.leaderboard = leaderboard
 
     def getDescription(self, test):
         doc_first_line = test.shortDescription()
@@ -84,7 +84,7 @@ class JSONTestResult(result.TestResult):
 
     def processResult(self, test, err=None):
         if self.getLeaderboardData(test)[0]:
-            self.leaderboard_columns.append(self.buildLeaderboardEntry(test))
+            self.leaderboard.append(self.buildLeaderboardEntry(test))
         else:
             self.results.append(self.buildResult(test, err))
 
@@ -121,11 +121,11 @@ class JSONTestRunner(object):
         self.buffer = buffer
         self.json_data = {}
         self.json_data["tests"] = []
-        self.json_data["leaderboard_columns"] = []
+        self.json_data["leaderboard"] = []
 
     def _makeResult(self):
         return self.resultclass(self.stream, self.descriptions, self.verbosity,
-                                self.json_data["tests"], self.json_data["leaderboard_columns"])
+                                self.json_data["tests"], self.json_data["leaderboard"])
 
     def run(self, test):
         "Run the given test case or test suite."
