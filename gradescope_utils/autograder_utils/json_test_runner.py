@@ -14,10 +14,11 @@ class JSONTestResult(result.TestResult):
 
     Used by JSONTestRunner.
     """
-    def __init__(self, stream, descriptions, verbosity, results):
+    def __init__(self, stream, descriptions, verbosity, results, leaderboard_columns):
         super(JSONTestResult, self).__init__(stream, descriptions, verbosity)
         self.descriptions = descriptions
         self.results = results
+        self.leaderboard_columns = leaderboard_columns
 
     def getDescription(self, test):
         doc_first_line = test.shortDescription()
@@ -34,6 +35,11 @@ class JSONTestResult(result.TestResult):
 
     def getVisibility(self, test):
         return getattr(getattr(test, test._testMethodName), '__visibility__', "visible")
+
+    def getLeaderboardData(self, test):
+        column_name = getattr(getattr(test, test._testMethodName), '__leaderboard_column__', None)
+        value = getattr(getattr(test, test._testMethodName), '__leaderboard_value__', None)
+        return (column_name, value)
 
     def startTest(self, test):
         super(JSONTestResult, self).startTest(test)
@@ -69,20 +75,33 @@ class JSONTestResult(result.TestResult):
         result["visibility"] = visibility
         return result
 
+    def buildLeaderboardEntry(self, test):
+        name, value = self.getLeaderboardData(test)
+        return {
+            "name": name,
+            "value": value
+        }
+
+    def processResult(self, test, err=None):
+        if self.getLeaderboardData(test)[0]:
+            self.leaderboard_columns.append(self.buildLeaderboardEntry(test))
+        else:
+            self.results.append(self.buildResult(test, err))
+
     def addSuccess(self, test):
         super(JSONTestResult, self).addSuccess(test)
-        self.results.append(self.buildResult(test))
+        self.processResult(test)
 
     def addError(self, test, err):
         super(JSONTestResult, self).addError(test, err)
         # Prevent output from being printed to stdout on failure
         self._mirrorOutput = False
-        self.results.append(self.buildResult(test, err))
+        self.processResult(test, err)
 
     def addFailure(self, test, err):
         super(JSONTestResult, self).addFailure(test, err)
         self._mirrorOutput = False
-        self.results.append(self.buildResult(test, err))
+        self.processResult(test, err)
 
 
 class JSONTestRunner(object):
@@ -102,10 +121,11 @@ class JSONTestRunner(object):
         self.buffer = buffer
         self.json_data = {}
         self.json_data["tests"] = []
+        self.json_data["leaderboard_columns"] = []
 
     def _makeResult(self):
         return self.resultclass(self.stream, self.descriptions, self.verbosity,
-                                self.json_data["tests"])
+                                self.json_data["tests"], self.json_data["leaderboard_columns"])
 
     def run(self, test):
         "Run the given test case or test suite."
