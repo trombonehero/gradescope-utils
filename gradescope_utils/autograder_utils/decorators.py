@@ -1,3 +1,6 @@
+from functools import wraps
+
+
 class weight(object):
     """Simple decorator to add a __weight__ property to a function
 
@@ -43,3 +46,27 @@ class tags(object):
     def __call__(self, func):
         func.__tags__ = self.tags
         return func
+
+
+class leaderboard_column(object):
+    """Decorator that indicates that a test corresponds to a leaderboard column
+
+    Usage: @leaderboard_column("high_score")
+
+    Then, within the test, set the value by calling kwargs['set_value'] with a value
+    """
+    def __init__(self, val):
+        self.val = val
+
+    def __call__(self, func):
+        func.__leaderboard_column__ = self.val
+
+        def set_value(x):
+            wrapper.__leaderboard_value__ = x
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            kwargs['set_value'] = set_value
+            return func(*args, **kwargs)
+
+        return wrapper
