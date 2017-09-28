@@ -55,12 +55,12 @@ class leaderboard(object):
     the name of the column on the leaderboard
 
     Then, within the test, set the value by calling
-    kwargs['set_value'] with a value. You can make this convenient by
-    explicitly declaring a set_value keyword argument, eg.
+    kwargs['set_leaderboard_value'] with a value. You can make this convenient by
+    explicitly declaring a set_leaderboard_value keyword argument, eg.
 
     ```
-    def test_highscore(set_value=None):
-        set_value(42)
+    def test_highscore(set_leaderboard_value=None):
+        set_leaderboard_value(42)
     ```
 
     """
@@ -71,12 +71,12 @@ class leaderboard(object):
     def __call__(self, func):
         func.__leaderboard_column__ = self.val
 
-        def set_value(x):
+        def set_leaderboard_value(x):
             wrapper.__leaderboard_value__ = x
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-            kwargs['set_value'] = set_value
+            kwargs['set_leaderboard_value'] = set_leaderboard_value
             return func(*args, **kwargs)
 
         return wrapper
