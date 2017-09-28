@@ -48,13 +48,23 @@ class tags(object):
         return func
 
 
-class leaderboard_column(object):
+class leaderboard(object):
     """Decorator that indicates that a test corresponds to a leaderboard column
 
-    Usage: @leaderboard_column("high_score")
+    Usage: @leaderboard("high_score"). The string parameter indicates
+    the name of the column on the leaderboard
 
-    Then, within the test, set the value by calling kwargs['set_value'] with a value
+    Then, within the test, set the value by calling
+    kwargs['set_value'] with a value. You can make this convenient by
+    explicitly declaring a set_value keyword argument, eg.
+
+    ```
+    def test_highscore(set_value=None):
+        set_value(42)
+    ```
+
     """
+
     def __init__(self, val):
         self.val = val
 
