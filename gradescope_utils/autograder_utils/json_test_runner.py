@@ -38,8 +38,9 @@ class JSONTestResult(result.TestResult):
 
     def getLeaderboardData(self, test):
         column_name = getattr(getattr(test, test._testMethodName), '__leaderboard_column__', None)
+        sort_order = getattr(getattr(test, test._testMethodName), '__leaderboard_sort_order__', None)
         value = getattr(getattr(test, test._testMethodName), '__leaderboard_value__', None)
-        return (column_name, value)
+        return (column_name, sort_order, value)
 
     def startTest(self, test):
         super(JSONTestResult, self).startTest(test)
@@ -76,10 +77,11 @@ class JSONTestResult(result.TestResult):
         return result
 
     def buildLeaderboardEntry(self, test):
-        name, value = self.getLeaderboardData(test)
+        name, sort_order, value = self.getLeaderboardData(test)
         return {
             "name": name,
-            "value": value
+            "value": value,
+            "order": sort_order,
         }
 
     def processResult(self, test, err=None):
