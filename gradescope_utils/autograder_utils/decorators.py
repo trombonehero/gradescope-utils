@@ -65,11 +65,13 @@ class leaderboard(object):
 
     """
 
-    def __init__(self, val):
-        self.val = val
+    def __init__(self, column_name, sort_order='desc'):
+        self.column_name = column_name
+        self.sort_order = sort_order
 
     def __call__(self, func):
-        func.__leaderboard_column__ = self.val
+        func.__leaderboard_column__ = self.column_name
+        func.__leaderboard_sort_order__ = self.sort_order
 
         def set_leaderboard_value(x):
             wrapper.__leaderboard_value__ = x
