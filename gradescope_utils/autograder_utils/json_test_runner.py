@@ -34,7 +34,7 @@ class JSONTestResult(result.TestResult):
         return getattr(getattr(test, test._testMethodName), '__weight__', 0.0)
 
     def getVisibility(self, test):
-        return getattr(getattr(test, test._testMethodName), '__visibility__', "visible")
+        return getattr(getattr(test, test._testMethodName), '__visibility__', None)
 
     def getLeaderboardData(self, test):
         column_name = getattr(getattr(test, test._testMethodName), '__leaderboard_column__', None)
@@ -61,6 +61,7 @@ class JSONTestResult(result.TestResult):
         weight = self.getWeight(test)
         tags = self.getTags(test)
         visibility = self.getVisibility(test)
+
         output = self.getOutput()
         if err:
             output += "Test Failed: {0}\n".format(err[1])
@@ -73,7 +74,8 @@ class JSONTestResult(result.TestResult):
             result["tags"] = tags
         if output and len(output) > 0:
             result["output"] = output
-        result["visibility"] = visibility
+        if visibility:
+            result["visibility"] = visibility
         return result
 
     def buildLeaderboardEntry(self, test):
@@ -112,7 +114,7 @@ class JSONTestRunner(object):
     resultclass = JSONTestResult
 
     def __init__(self, stream=sys.stdout, descriptions=True, verbosity=1,
-                 failfast=False, buffer=True, visibility=None):
+                 failfast=False, buffer=True, visibility='visible'):
         """
         Set buffer to True to include test output in JSON
         """
@@ -124,8 +126,7 @@ class JSONTestRunner(object):
         self.json_data = {}
         self.json_data["tests"] = []
         self.json_data["leaderboard"] = []
-        if visibility:
-            self.json_data["visibility"] = visibility
+        self.json_data["visibility"] = visibility
 
     def _makeResult(self):
         return self.resultclass(self.stream, self.descriptions, self.verbosity,
