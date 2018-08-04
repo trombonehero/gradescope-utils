@@ -114,7 +114,8 @@ class JSONTestRunner(object):
     resultclass = JSONTestResult
 
     def __init__(self, stream=sys.stdout, descriptions=True, verbosity=1,
-                 failfast=False, buffer=True, visibility='visible'):
+                 failfast=False, buffer=True, visibility=None,
+                 stdout_visibility=None):
         """
         Set buffer to True to include test output in JSON
         """
@@ -126,7 +127,10 @@ class JSONTestRunner(object):
         self.json_data = {}
         self.json_data["tests"] = []
         self.json_data["leaderboard"] = []
-        self.json_data["visibility"] = visibility
+        if visibility:
+            self.json_data["visibility"] = visibility
+        if stdout_visibility:
+            self.json_data["stdout_visibility"] = stdout_visibility
 
     def _makeResult(self):
         return self.resultclass(self.stream, self.descriptions, self.verbosity,
