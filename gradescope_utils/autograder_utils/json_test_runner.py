@@ -33,6 +33,9 @@ class JSONTestResult(result.TestResult):
     def getWeight(self, test):
         return getattr(getattr(test, test._testMethodName), '__weight__', 0.0)
 
+    def getScore(self, test):
+        return getattr(getattr(test, test._testMethodName), '__score__', None)
+
     def getVisibility(self, test):
         return getattr(getattr(test, test._testMethodName), '__visibility__', None)
 
@@ -61,13 +64,16 @@ class JSONTestResult(result.TestResult):
         weight = self.getWeight(test)
         tags = self.getTags(test)
         visibility = self.getVisibility(test)
+        score = self.getScore(test)
+        if score is None:
+            score = weight if passed else 0.0
 
         output = self.getOutput()
         if err:
             output += "Test Failed: {0}\n".format(err[1])
         result = {
             "name": self.getDescription(test),
-            "score": weight if passed else 0.0,
+            "score": score,
             "max_score": weight,
         }
         if tags:
