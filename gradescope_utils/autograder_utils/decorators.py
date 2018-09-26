@@ -87,27 +87,32 @@ class leaderboard(object):
 class partial_credit(object):
     """Decorator that indicates that a test allows partial credit
 
-    Usage: @partial_credit (no arguments)
+    Usage: @partial_credit(test_weight)
 
     Then, within the test, set the value by calling
     kwargs['set_score'] with a value. You can make this convenient by
     explicitly declaring a set_score keyword argument, eg.
 
     ```
-    @partial_credit
+    @partial_credit(10)
     def test_partial(set_score=None):
-        set_score(42)
+        set_score(4.2)
     ```
 
     """
 
-    def __init__(self, func):
-        self.__func__ = func
-        update_wrapper(self, func)
+    def __init__(self, weight):
+        self.weight = weight
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, func):
+        func.__weight__ = self.weight
+
         def set_score(x):
-            self.__score__ = x
+            wrapper.__score__ = x
 
-        kwargs['set_score'] = set_score
-        return self.__func__(*args, **kwargs)
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            kwargs['set_score'] = set_score
+            return func(*args, **kwargs)
+
+        return wrapper
