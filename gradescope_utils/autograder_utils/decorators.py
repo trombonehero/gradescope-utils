@@ -90,13 +90,13 @@ class partial_credit(object):
     Usage: @partial_credit (no arguments)
 
     Then, within the test, set the value by calling
-    kwargs['set_points'] with a value. You can make this convenient by
-    explicitly declaring a set_points keyword argument, eg.
+    kwargs['set_score'] with a value. You can make this convenient by
+    explicitly declaring a set_score keyword argument, eg.
 
     ```
     @partial_credit
-    def test_partial(set_points=None):
-        set_points(42)
+    def test_partial(set_score=None):
+        set_score(42)
     ```
 
     """
@@ -106,8 +106,8 @@ class partial_credit(object):
         update_wrapper(self, func)
 
     def __call__(self, *args, **kwargs):
-        def set_points(x):
-            self.__points__ = x
+        def set_score(x):
+            self.__score__ = x
 
-        kwargs['set_points'] = set_points
+        kwargs['set_score'] = set_score
         return self.__func__(*args, **kwargs)
