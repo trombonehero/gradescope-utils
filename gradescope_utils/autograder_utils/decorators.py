@@ -1,4 +1,4 @@
-from functools import wraps
+from functools import wraps, update_wrapper
 
 
 class weight(object):
@@ -82,3 +82,32 @@ class leaderboard(object):
             return func(*args, **kwargs)
 
         return wrapper
+
+
+class partial_credit(object):
+    """Decorator that indicates that a test allows partial credit
+
+    Usage: @partial_credit (no arguments)
+
+    Then, within the test, set the value by calling
+    kwargs['set_points'] with a value. You can make this convenient by
+    explicitly declaring a set_points keyword argument, eg.
+
+    ```
+    @partial_credit
+    def test_partial(set_points=None):
+        set_points(42)
+    ```
+
+    """
+
+    def __init__(self, func):
+        self.__func__ = func
+        update_wrapper(self, func)
+
+    def __call__(self, *args, **kwargs):
+        def set_points(x):
+            self.__points__ = x
+
+        kwargs['set_points'] = set_points
+        return self.__func__(*args, **kwargs)
