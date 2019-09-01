@@ -12,3 +12,7 @@ Then, run `pip install gradescope-utils`
 ## Packages
 
 - [Autograder Utilities](/gradescope_utils/autograder_utils)
+
+## Support
+
+Contact us at [help@gradescope.com](mailto:help@gradescope.com) if you need help with these packages.
