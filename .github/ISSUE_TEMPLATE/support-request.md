@@ -1,8 +1,8 @@
 ---
 name: Support request
 about: Please send support requests to help@gradescope.com
-title: ''
-labels: ''
+title: "[Please don't use the issue tracker for support requests]"
+labels: support
 assignees: ''
 
 ---
