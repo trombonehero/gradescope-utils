@@ -13,6 +13,11 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior, including example code used to trigger the behavior.
 
+```python
+import gradescope_utils
+...
+```
+
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
