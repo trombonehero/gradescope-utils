@@ -1,6 +1,6 @@
 ---
 name: Support request
-about: Redirect support requests to help@gradescope.com
+about: Please send support requests to help@gradescope.com
 title: ''
 labels: ''
 assignees: ''
