@@ -134,7 +134,8 @@ class JSONTestRunner(object):
 
         post_processor: if supplied, will be called with the final JSON
         data before it is written, allowing the caller to overwrite the
-        test results (e.g. add a late penalty)
+        test results (e.g. add a late penalty) by editing the results
+        dict in the first argument.
         """
         self.stream = stream
         self.descriptions = descriptions
