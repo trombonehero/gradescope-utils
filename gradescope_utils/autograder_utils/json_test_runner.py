@@ -36,6 +36,9 @@ class JSONTestResult(result.TestResult):
     def getScore(self, test):
         return getattr(getattr(test, test._testMethodName), '__score__', None)
 
+    def getNumber(self, test):
+        return getattr(getattr(test, test._testMethodName), '__number__', None)
+
     def getVisibility(self, test):
         return getattr(getattr(test, test._testMethodName), '__visibility__', None)
 
@@ -63,6 +66,7 @@ class JSONTestResult(result.TestResult):
 
         weight = self.getWeight(test)
         tags = self.getTags(test)
+        number = self.getNumber(test)
         visibility = self.getVisibility(test)
         score = self.getScore(test)
         if score is None:
@@ -82,6 +86,8 @@ class JSONTestResult(result.TestResult):
             result["output"] = output
         if visibility:
             result["visibility"] = visibility
+        if number:
+            result["number"] = number
         return result
 
     def buildLeaderboardEntry(self, test):
