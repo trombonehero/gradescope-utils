@@ -130,6 +130,11 @@ class JSONTestRunner(object):
                  stdout_visibility=None, post_processor=None):
         """
         Set buffer to True to include test output in JSON
+
+
+        post_processor, if supplied, will be called with the final JSON
+        data before it is written, allowing the caller to overwrite the
+        test results (e.g. add a late penalty)
         """
         self.stream = stream
         self.descriptions = descriptions
