@@ -184,3 +184,6 @@ source_parsers = {
 }
 
 source_suffix = ['.rst', '.md']
+
+# Document constructors as well as class doc strings
+autoclass_content = 'both'

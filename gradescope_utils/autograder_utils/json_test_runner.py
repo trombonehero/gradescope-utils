@@ -132,7 +132,7 @@ class JSONTestRunner(object):
         Set buffer to True to include test output in JSON
 
 
-        post_processor, if supplied, will be called with the final JSON
+        post_processor: if supplied, will be called with the final JSON
         data before it is written, allowing the caller to overwrite the
         test results (e.g. add a late penalty)
         """
