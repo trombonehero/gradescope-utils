@@ -14,6 +14,21 @@ class weight(object):
         return func
 
 
+class number(object):
+    """Simple decorator to add a __number__ property to a function
+
+    Usage: @number("1.1")
+
+    This field will then be used to sort the test results on Gradescope.
+    """
+
+    def __init__(self, val):
+        self.val = val
+
+    def __call__(self, func):
+        func.__number__ = self.val
+        return func
+
 class visibility(object):
     """Simple decorator to add a __visibility__ property to a function
 
