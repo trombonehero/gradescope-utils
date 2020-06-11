@@ -13,6 +13,14 @@ Then, run `pip install gradescope-utils`
 
 - [Autograder Utilities](/gradescope_utils/autograder_utils)
 
+## Releasing new versions
+
+Follow https://packaging.python.org/tutorials/packaging-projects/, but in brief:
+
+1. Bump the version in setup.py
+2. Build new packages: `python3 setup.py sdist bdist_wheel`
+3. Upload packages: `python3 -m twine upload --repository testpypi dist/*`
+
 ## Support
 
 Contact us at [help@gradescope.com](mailto:help@gradescope.com) if you need help with these packages.
