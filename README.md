@@ -13,6 +13,10 @@ Then, run `pip install gradescope-utils`
 
 - [Autograder Utilities](/gradescope_utils/autograder_utils)
 
+## Changelog
+
+See the [Releases](https://github.com/gradescope/gradescope-utils/releases) page.
+
 ## Releasing new versions
 
 Follow https://packaging.python.org/tutorials/packaging-projects/, but in brief:
