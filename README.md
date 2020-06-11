@@ -18,8 +18,9 @@ Then, run `pip install gradescope-utils`
 Follow https://packaging.python.org/tutorials/packaging-projects/, but in brief:
 
 1. Bump the version in setup.py
-2. Build new packages: `python3 setup.py sdist bdist_wheel`
-3. Upload packages: `python3 -m twine upload dist/*`
+2. Tag the commit: `git tag vX.Y.Z COMMIT_SHA`
+3. Build new packages: `python3 setup.py sdist bdist_wheel`
+4. Upload packages: `python3 -m twine upload dist/*`
 
 ## Support
 
