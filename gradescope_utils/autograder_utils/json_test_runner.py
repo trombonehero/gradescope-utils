@@ -127,15 +127,22 @@ class JSONTestRunner(object):
 
     def __init__(self, stream=sys.stdout, descriptions=True, verbosity=1,
                  failfast=False, buffer=True, visibility=None,
-                 stdout_visibility=None):
+                 stdout_visibility=None, post_processor=None):
         """
         Set buffer to True to include test output in JSON
+
+
+        post_processor: if supplied, will be called with the final JSON
+        data before it is written, allowing the caller to overwrite the
+        test results (e.g. add a late penalty) by editing the results
+        dict in the first argument.
         """
         self.stream = stream
         self.descriptions = descriptions
         self.verbosity = verbosity
         self.failfast = failfast
         self.buffer = buffer
+        self.post_processor = post_processor
         self.json_data = {}
         self.json_data["tests"] = []
         self.json_data["leaderboard"] = []
@@ -173,6 +180,9 @@ class JSONTestRunner(object):
         for test in self.json_data["tests"]:
             total_score += test["score"]
         self.json_data["score"] = total_score
+
+        if self.post_processor is not None:
+            self.post_processor(self.json_data)
 
         json.dump(self.json_data, self.stream, indent=4)
         self.stream.write('\n')
