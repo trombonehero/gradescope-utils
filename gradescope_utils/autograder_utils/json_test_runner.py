@@ -181,7 +181,7 @@ class JSONTestRunner(object):
             total_score += test["score"]
         self.json_data["score"] = total_score
 
-        if self.post_processor:
+        if self.post_processor is not None:
             self.post_processor(self.json_data)
 
         json.dump(self.json_data, self.stream, indent=4)
