@@ -23,6 +23,9 @@ class number(object):
     """
 
     def __init__(self, val):
+        if not isinstance(val, str):
+            raise ValueError(f'@number takes a string argument, not {val}')
+
         self.val = val
 
     def __call__(self, func):
